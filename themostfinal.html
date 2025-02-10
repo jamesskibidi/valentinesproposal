@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: pink;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background 0.5s ease;
+        }
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            color: white;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px #ff4081;
+        }
+        .btn {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 10px;
+        }
+        #yes-btn {
+            background-color: #ff4081;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        #no-btn {
+            background-color: white;
+            color: #ff4081;
+            opacity: 2;
+            transition: opacity 0.3s ease;
+        }
+        .heart {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: fall linear infinite;
+            opacity: 1;
+        }
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -5px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: 5px;
+        }
+        .gif {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .crying-cat {
+            display: none;
+            width: 150px;
+            margin-top: 10px;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+        }
+        #celebration-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: pink;
+        }
+        .celebration-box {
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        /* Twerking Man GIF */
+        .twerking-man {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: auto;
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 200px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Proposal Section -->
+    <div id="proposal-screen" class="container">
+        <img class="gif" src="https://media.tenor.com/cTcaD2tkp9oAAAAC/cat-ring-propose.gif" alt="Proposing Cat">
+        <h1>April Love S. Malaque <br> Will you be my Valentine?</h1>
+        <button id="yes-btn" class="btn" onclick="sayYes()">Yes</button>
+        <button id="no-btn" class="btn" onclick="sayNo()">No</button>
+        <br>
+        <img id="crying-cat" class="crying-cat" src="" alt="Crying Cat">
+    </div>
+
+    <!-- Celebration Section -->
+    <div id="celebration-screen">
+        <div class="celebration-box">
+            <h1>Of course, I know you can't resist me!</h1>
+        </div>
+        <img class="twerking-man" src="https://media.tenor.com/IHPTwWvB0esAAAAC/twerk.gif" alt="Twerking Man">
+
+        <!-- Fireworks -->
+        <img class="firework" style="top: 10%; left: 10%;" src="https://media.tenor.com/8zZdwlfS2X4AAAAi/fireworks.gif" alt="Fireworks">
+        <img class="firework" style="top: 10%; right: 10%;" src="https://media.tenor.com/8zZdwlfS2X4AAAAi/fireworks.gif" alt="Fireworks">
+        <img class="firework" style="bottom: 10%; left: 20%;" src="https://media.tenor.com/8zZdwlfS2X4AAAAi/fireworks.gif" alt="Fireworks">
+        <img class="firework" style="bottom: 10%; right: 20%;" src="https://media.tenor.com/8zZdwlfS2X4AAAAi/fireworks.gif" alt="Fireworks">
+    </div>
+
+    <script>
+        let noBtn = document.getElementById("no-btn");
+        let yesBtn = document.getElementById("yes-btn");
+        let cryingCat = document.getElementById("crying-cat");
+        let proposalScreen = document.getElementById("proposal-screen");
+        let celebrationScreen = document.getElementById("celebration-screen");
+
+        let noTexts = [
+            "Are you sure?",
+            "I know it's a mistake",
+            "You silly, I know you mean Yes",
+            "Awee my clumsy baby",
+            "Wait are you serious?",
+            "Hey!!!",
+            "Ouch you don't want me fr?",
+            "C'mon you're lying"
+        ];
+        let cryingCatGifs = [
+            "https://media.tenor.com/rXONnUOO4xUAAAAd/cat-crying.gif",
+            "https://media.tenor.com/gxuvS4gqWtcAAAAd/kitten-cat.gif",
+            "https://media.tenor.com/PXOXN8jppH4AAAAd/sad-cat.gif",
+            "https://media.tenor.com/GsRNT6mPCfUAAAAC/cat-kitten.gif",
+            "https://media.tenor.com/NU6JhE4ziH8AAAAC/cat-crying.gif"
+        ];
+        let count = 0;
+
+        function sayNo() {
+            if (count < noTexts.length) {
+                noBtn.innerText = noTexts[count];
+
+                // Increase Yes button size by 50px each time
+                let currentFontSize = parseInt(window.getComputedStyle(yesBtn).fontSize);
+                yesBtn.style.fontSize = (currentFontSize + 50) + "px";
+
+                // Reduce No button opacity by 10% per click
+                let currentOpacity = parseFloat(window.getComputedStyle(noBtn).opacity);
+                noBtn.style.opacity = Math.max(0, currentOpacity - 0.1);
+
+                // Display a random crying cat gif
+                cryingCat.src = cryingCatGifs[Math.floor(Math.random() * cryingCatGifs.length)];
+                cryingCat.style.display = "block";
+
+                count++;
+            } else {
+                noBtn.innerText = "....";
+                noBtn.disabled = true;
+                noBtn.style.opacity = 0;
+            }
+        }
+
+        function sayYes() {
+            proposalScreen.style.display = "none";
+            celebrationScreen.style.display = "flex";
+        }
+
+        function createHeart() {
+            let heart = document.createElement("div");
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+
+        setInterval(createHeart, 200);
+    </script>
+
+</body>
+</html>
